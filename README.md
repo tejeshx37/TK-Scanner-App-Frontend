@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TK Scanner App
+
+Event attendance scanning application with separate frontend (mobile) and backend.
+
+## Project Structure
+
+- **mobile/**: React Native (Expo) application for Android/iOS.
+- **backend/**: Express + MongoDB API server.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Backend Setup
 
 ```bash
+cd backend
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Server runs on http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Mobile App Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd mobile
+npm install
+npx expo start -c
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**If the QR Code does not appear:**
+- Open the **Expo Go** app on your phone.
+- Manually enter the URL: `exp://<your-local-ip>:8081`
+  - Example: `exp://192.168.29.170:8081`
+- Ensure your phone and computer are on the same Wi-Fi network.
 
-## Learn More
+## Configuration
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Backend**: Rename `backend/.env.example` to `backend/.env` and update MongoDB URL.
+- **Mobile**: Update `mobile/.env` with your backend URL (use local IP for physical devices).

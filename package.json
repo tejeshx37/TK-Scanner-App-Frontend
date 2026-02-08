@@ -1,26 +1,16 @@
 {
-  "name": "tk-scanner-app",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
-  },
-  "dependencies": {
-    "next": "16.1.6",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
-    "tailwindcss": "^4",
-    "typescript": "^5"
-  }
+    "name": "tk-scanner-app-root",
+    "version": "1.0.0",
+    "description": "Root package for TK Scanner App monorepo",
+    "scripts": {
+        "start": "concurrently \"npm run backend\" \"npm run mobile\"",
+        "backend": "cd backend && npm run dev",
+        "cleanup": "npx ts-node scripts/cleanup.ts",
+        "mobile": "cd mobile && npx expo start -c",
+        "tunnel": "cd backend && npx ts-node src/scripts/restart-tunnel.ts",
+        "install:all": "npm install && cd backend && npm install && cd ../mobile && npm install"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
 }
