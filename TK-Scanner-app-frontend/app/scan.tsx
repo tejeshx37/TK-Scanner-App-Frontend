@@ -10,6 +10,7 @@ import { ScanResponse } from '../types';
 
 export default function Scan() {
     const router = useRouter();
+    const [isAuthChecked, setIsAuthChecked] = useState(false);
     const [isScanning, setIsScanning] = useState(true);
     const [scanResult, setScanResult] = useState<ScanResponse | null>(null);
     const [loading, setLoading] = useState(false);
@@ -18,23 +19,29 @@ export default function Scan() {
     const [scannerId, setScannerId] = useState<string>('unknown_device');
 
     useEffect(() => {
-        // Auth check
-        SecureStore.getItemAsync('auth_token').then((token) => {
-            if (!token) {
-                router.replace('/login');
-            }
-        });
+        async function checkAuth() {
+            try {
+                // Auth check
+                const token = await SecureStore.getItemAsync('auth_token');
+                if (!token) {
+                    router.replace('/login');
+                    return;
+                }
 
-        // Get user/scanner info
-        SecureStore.getItemAsync('user_data').then((userData) => {
-            if (userData) {
-                try {
-                    const user = JSON.parse(userData);
-                    setScannerId(user.id);
-                } catch (_) { }
+                // Get user/scanner info
+                const userData = await SecureStore.getItemAsync('user_data');
+                if (userData) {
+                    try {
+                        const user = JSON.parse(userData);
+                        setScannerId(user.id);
+                    } catch (_) { }
+                }
+            } finally {
+                setIsAuthChecked(true);
             }
-        });
+        }
 
+        checkAuth();
     }, [router]);
 
     const handleScan = useCallback(async (decodedText: string) => {
@@ -115,6 +122,11 @@ export default function Scan() {
         await SecureStore.deleteItemAsync('user_data');
         router.replace('/login');
     };
+
+    // Don't render until auth is checked
+    if (!isAuthChecked) {
+        return null;
+    }
 
     return (
         <SafeAreaView className="flex-1 bg-black">
